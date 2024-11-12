@@ -1,21 +1,20 @@
-//recursion, recursividad y quiero le cambie a recursividad a ciclo, explicar ventajas y desventajas de estos dos
 fun main(){
-    val list: AnggieLinkedList = AnggieLinkedList() //objeto/instancia
+    val list = AnggieLinkedList() //objeto/instancia
     val hi = list.isEmpty()
             println("It's $hi       => True: lista vacia - False: lista no vacia") //TRUE vacia
 
         list.insert((Pair(1, "insert")))
         list.insert((Pair(3, "insert")))
         list.insert((Pair(2, "insert")))
-        list.prepend((Pair(0, "prepend")))
-//        list.prepend((Pair(-1, "prepend")))
-//        list.prepend((Pair(-2, "prepend")))
-//        list.append((Pair(4, "append")))
-//        list.append((Pair(5, "append")))
-//        list.append((Pair(6, "append")))
+        list.prepend((Pair(-1, "prepend")))
+        list.prepend((Pair(-2, "prepend")))
+        list.prepend((Pair(-3, "prepend")))
+        list.append((Pair(4, "append")))
+        list.append((Pair(5, "append")))
+        list.append((Pair(6, "append")))
             println()
     val lista0 = list.toString() //(1, append) -> (2, append) -> null
-        println("Lista: ")
+        println("List: ")
         println(lista0)
         println()
 
@@ -29,7 +28,7 @@ fun main(){
         println()
 
     val lista1 = list.toString() //(1, append) -> (2, append) -> null
-        println("Lista: ")
+        println("List: ")
         println(lista1)
         println()
 
@@ -45,23 +44,23 @@ fun main(){
         println(list.toString())
         println()
 
-    val lista2 = list.toString() //(1, append) -> (2, append) -> null
-        println("Lista: ")
-        println(lista2)
-        println()
-
-        print("EL puntero esta en el nodo:          ")
-        println(list.get())
-        println()
-
-        list.delete()
-        println("Despues de eliminar")
-        println(list.toString())
-        println()
+//    val lista2 = list.toString() //(1, append) -> (2, append) -> null
+//        println("List: ")
+//        println(lista2)
+//        println()
+//
+//        print("EL puntero esta en el nodo:          ")
+//        println(list.get())
+//        println()
+//
+//        list.delete()
+//        println("Despues de eliminar")
+//        println(list.toString())
+//        println()
 
 }
 
-data class Nodo (var info: Pair<Int, String>, var siguiente : Nodo? = null ){
+data class Node (var info: Pair<Int, String>, var siguiente : Node? = null ){
     override fun toString(): String {
         return if(siguiente != null){
             "$info => $siguiente"
@@ -70,19 +69,19 @@ data class Nodo (var info: Pair<Int, String>, var siguiente : Nodo? = null ){
         }
     }
 }
-class AnggieLinkedList(){
-    var head: Nodo? = null
-    var punteroActual: Nodo? = null 
-    var punteroAnterior: Nodo? = null
-    var punteroFinal: Nodo? = null
+class AnggieLinkedList {
+    var head: Node? = null
+    var punteroActual: Node? = null 
+    var punteroAnterior: Node? = null
+    var punteroFinal: Node? = null
+//    var nodoGeneral = Nodo(Pair(0, "head"))
+
 
     fun insert(info: Pair<Int, String>){
-        val node = Nodo(info) //creo un nuevo nodo
+        val node = Node(info)
 
-        if (punteroActual == null){ //checamos que head no este vacio
-            head = node
-            punteroActual = node
-            punteroFinal = node
+        if (punteroActual == null){
+            createNewFirstNode(node)
         }
         else if(punteroActual?.siguiente == null){
             punteroActual?.siguiente = node
@@ -91,46 +90,45 @@ class AnggieLinkedList(){
         else {
             node.siguiente = punteroActual?.siguiente
             punteroActual?.siguiente = node
-            // punteroFinal = node.siguiente //
-            // punteroAnterior = punteroAnterior?.siguiente//
         }
     }
-    fun prepend(info: Pair<Int, String>){// inicio de la list
-        val nodoInicio = Nodo(info)
-        if (head == null){ 
-            head = nodoInicio
-            punteroActual = nodoInicio//
-            punteroFinal = punteroActual//
+    fun prepend(info: Pair<Int, String>){
+        val firstNode = Node(info)
+        if (head == null){
+            createNewFirstNode(firstNode)
         }
         else if(punteroActual == head){
-            nodoInicio.siguiente = head
-            head = nodoInicio
-            punteroAnterior = nodoInicio
+            firstNode.siguiente = head
+            head = firstNode
+            punteroAnterior = firstNode
         }
         else {
-            nodoInicio.siguiente = head
-            head = nodoInicio
+            firstNode.siguiente = head
+            head = firstNode
         }
     }
     fun append(info: Pair<Int, String>){ //final de la lista
-        val nodoFinal = Nodo(info)
+        val endNode = Node(info)
         if (head == null){
-            head = nodoFinal
-            punteroActual = nodoFinal
-            punteroFinal = nodoFinal
+            createNewFirstNode(endNode)
         }
         else if(head?.siguiente == punteroActual){
             punteroAnterior = head
-            punteroFinal?.siguiente = nodoFinal
-            punteroFinal = nodoFinal
+            punteroFinal?.siguiente = endNode
+            punteroFinal = endNode
         }
         else {
-            punteroFinal?.siguiente = nodoFinal
-            punteroFinal = nodoFinal
-            // punteroActual = punteroActual?.next
-            // punteroAnterior = punteroAnterior?.next
+            punteroFinal?.siguiente = endNode
+            punteroFinal = endNode
         }
     }
+
+    private fun createNewFirstNode(firstNode: Node) {
+        head = firstNode
+        punteroActual = firstNode
+        punteroFinal = firstNode
+    }
+
     fun delete() {
         var ant = head
         var act = head
@@ -181,31 +179,25 @@ class AnggieLinkedList(){
         }
     }
     fun next (){
-        val punteroSiguiente = punteroActual?.siguiente
-//        if (punteroSiguiente == null && head != null){ //lo hace circular
-//            punteroActual = head
-//            punteroAnterior = null
-//        }
-        if (punteroSiguiente == null){
-            punteroActual = punteroActual
+        val nextPointer = punteroActual?.siguiente
+        
+        if (nextPointer == null){
+            punteroActual
         }
         else if (punteroActual == head){
-            punteroActual = punteroSiguiente
+            punteroActual = nextPointer
             punteroAnterior = head
         }
         else {
-           punteroActual = punteroSiguiente
+           punteroActual = nextPointer
            punteroAnterior = punteroAnterior?.siguiente
         }
     }
     fun get(): Pair<Int, String>? {
         return punteroActual?.info
     }
-    fun getFinal(): Pair<Int, String>? {
-        return punteroFinal?.info
-    }
+
 }
-//checar los parametros y enviarselo 
 
 //list.insert(Pair(2, "holiwis")) YA     // Creates and inserts a new node after the current pointer
 //list.delete()                   // Deletes the current pointer node

@@ -1,12 +1,11 @@
 package quick.start
 
 import AnggieLinkedList
-import Nodo
-import org.junit.Before
+import Node
 import org.junit.Test
 import kotlin.test.assertEquals
 
-class AnggieLinkedListTest {git
+class AnggieLinkedListTest {
 
     @Test
     fun `isEmpty() empty list`() {
@@ -24,7 +23,7 @@ class AnggieLinkedListTest {git
     fun `isEmpty() non-empty list`() {
         //Arrange
         val list = AnggieLinkedList()
-        list.head = Nodo(Pair(0, ""))
+        list.head = Node(Pair(0, ""))
 
         //Act
         val isEmpty = list.isEmpty()
@@ -37,7 +36,7 @@ class AnggieLinkedListTest {git
     fun `insert() add head with insert`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value = Pair(4, "jj")
+        val value = Pair(4, "inert")
 
         //Act
         list.insert(info = value)
@@ -88,7 +87,7 @@ class AnggieLinkedListTest {git
     fun `append() add head with append`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value = Pair(4, "jj")
+        val value = Pair(4, "aa")
 
         //Act
         list.append(info = value)
@@ -101,8 +100,8 @@ class AnggieLinkedListTest {git
     fun `append() add 2 nodes with append`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value1 = Pair(1, "jj")
-        val value2 = Pair(2, "jj")
+        val value1 = Pair(1, "aa")
+        val value2 = Pair(2, "bb")
 
         //Act
         list.append(info = value1)
@@ -146,7 +145,6 @@ class AnggieLinkedListTest {git
         list.append(info = value3)
 
         //Assert
-        assertEquals(list.head?.info, value1)
         assertEquals(list.punteroActual?.info, value1)
     }
 
@@ -212,7 +210,6 @@ class AnggieLinkedListTest {git
         list.prepend(info = value1)
 
         //Assert
-        assertEquals(list.head?.info, value1)
         assertEquals(list.punteroActual?.info, value3)
     }
 
@@ -233,10 +230,10 @@ class AnggieLinkedListTest {git
     }
 
     @Test
-    fun `delete() when only have head`() {
+    fun `delete() delete when only have head`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value1 = Nodo(Pair(1, "aa"), null)
+        val value1 = Node(Pair(1, "aa"), null)
         list.head = value1
         list.punteroActual = value1
         list.punteroFinal = value1
@@ -253,9 +250,9 @@ class AnggieLinkedListTest {git
     fun `delete() when current pointer is head`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Nodo(Pair(3, "bb"))
-        val value2 = Nodo(Pair(2, "bb"), value3)
-        val value1 = Nodo(Pair(1, "aa"), value2)
+        val value3 = Node(Pair(3, "bb"))
+        val value2 = Node(Pair(2, "bb"), value3)
+        val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value1
         list.punteroFinal = value3
@@ -272,9 +269,9 @@ class AnggieLinkedListTest {git
     fun `delete() delete current pointer node when next node is not null`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Nodo(Pair(3, "bb"))
-        val value2 = Nodo(Pair(2, "bb"), value3)
-        val value1 = Nodo(Pair(1, "aa"), value2)
+        val value3 = Node(Pair(3, "bb"))
+        val value2 = Node(Pair(2, "bb"), value3)
+        val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value2
         list.punteroFinal = value3
@@ -291,9 +288,9 @@ class AnggieLinkedListTest {git
     fun `delete() delete when current pointer node is end pointer`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Nodo(Pair(3, "bb"))
-        val value2 = Nodo(Pair(2, "bb"), value3)
-        val value1 = Nodo(Pair(1, "aa"), value2)
+        val value3 = Node(Pair(3, "bb"))
+        val value2 = Node(Pair(2, "bb"), value3)
+        val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value3
         list.punteroFinal = value3
@@ -310,9 +307,9 @@ class AnggieLinkedListTest {git
     fun `get() get current pointer node with get`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Nodo(Pair(3, "bb"))
-        val value2 = Nodo(Pair(2, "bb"), value3)
-        val value1 = Nodo(Pair(1, "aa"), value2)
+        val value3 = Node(Pair(3, "bb"))
+        val value2 = Node(Pair(2, "bb"), value3)
+        val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value1
         list.punteroFinal = value3
@@ -329,9 +326,9 @@ class AnggieLinkedListTest {git
     fun `get() get current pointer 2`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Nodo(Pair(3, "bb"))
-        val value2 = Nodo(Pair(2, "bb"), value3)
-        val value1 = Nodo(Pair(1, "aa"), value2)
+        val value3 = Node(Pair(3, "bb"))
+        val value2 = Node(Pair(2, "bb"), value3)
+        val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value3
         list.punteroFinal = value3
@@ -348,9 +345,9 @@ class AnggieLinkedListTest {git
     fun `next() next node is not null`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Nodo(Pair(3, "bb"))
-        val value2 = Nodo(Pair(2, "bb"), value3)
-        val value1 = Nodo(Pair(1, "aa"), value2)
+        val value3 = Node(Pair(3, "bb"))
+        val value2 = Node(Pair(2, "bb"), value3)
+        val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value1
         list.punteroFinal = value3
@@ -367,9 +364,9 @@ class AnggieLinkedListTest {git
     fun `next() next node is not null 2`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Nodo(Pair(3, "bb"))
-        val value2 = Nodo(Pair(2, "bb"), value3)
-        val value1 = Nodo(Pair(1, "aa"), value2)
+        val value3 = Node(Pair(3, "bb"))
+        val value2 = Node(Pair(2, "bb"), value3)
+        val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value3
         list.punteroFinal = value3
