@@ -269,7 +269,7 @@ class AnggieLinkedListTest {
     fun `delete() delete current pointer node when next node is not null`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Node(Pair(3, "bb"))
+        val value3 = Node(Pair(3, "cc"))
         val value2 = Node(Pair(2, "bb"), value3)
         val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
