@@ -58,7 +58,7 @@ class AnggieLinkedListTest {
 
         //Assert
         assertEquals(list.head?.info, value1)
-        assertEquals(list.head?.siguiente?.info, value2)
+        assertEquals(list.head?.next?.info, value2)
     }
 
     @Test
@@ -78,9 +78,9 @@ class AnggieLinkedListTest {
 
         //Assert
         assertEquals(list.head?.info, value1)
-        assertEquals(list.head?.siguiente?.info, value4)
-        assertEquals(list.head?.siguiente?.siguiente?.info, value3)
-        assertEquals(list.head?.siguiente?.siguiente?.siguiente?.info, value2)
+        assertEquals(list.head?.next?.info, value4)
+        assertEquals(list.head?.next?.next?.info, value3)
+        assertEquals(list.head?.next?.next?.next?.info, value2)
     }
 
     @Test
@@ -109,7 +109,7 @@ class AnggieLinkedListTest {
 
         //Assert
         assertEquals(list.head?.info, value1)
-        assertEquals(list.head?.siguiente?.info, value2)
+        assertEquals(list.head?.next?.info, value2)
     }
 
     @Test
@@ -127,8 +127,8 @@ class AnggieLinkedListTest {
 
         //Assert
         assertEquals(list.head?.info, value1)
-        assertEquals(list.head?.siguiente?.info, value2)
-        assertEquals(list.head?.siguiente?.siguiente?.info, value3)
+        assertEquals(list.head?.next?.info, value2)
+        assertEquals(list.head?.next?.next?.info, value3)
     }
 
     @Test
@@ -174,7 +174,7 @@ class AnggieLinkedListTest {
 
         //Assert
         assertEquals(list.head?.info, value1)
-        assertEquals(list.head?.siguiente?.info, value2)
+        assertEquals(list.head?.next?.info, value2)
     }
 
     @Test
@@ -192,8 +192,8 @@ class AnggieLinkedListTest {
 
         //Assert
         assertEquals(list.head?.info, value1)
-        assertEquals(list.head?.siguiente?.info, value2)
-        assertEquals(list.head?.siguiente?.siguiente?.info, value3)
+        assertEquals(list.head?.next?.info, value2)
+        assertEquals(list.head?.next?.next?.info, value3)
     }
 
     @Test
@@ -219,7 +219,7 @@ class AnggieLinkedListTest {
         val list = AnggieLinkedList()
         list.head = null
         list.punteroActual = null
-        list.punteroFinal = null
+        list.EndPointer = null
         list.punteroAnterior = null
 
         //Act
@@ -236,7 +236,7 @@ class AnggieLinkedListTest {
         val value1 = Node(Pair(1, "aa"), null)
         list.head = value1
         list.punteroActual = value1
-        list.punteroFinal = value1
+        list.EndPointer = value1
         list.punteroAnterior = null
 
         //Act
@@ -255,7 +255,7 @@ class AnggieLinkedListTest {
         val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value1
-        list.punteroFinal = value3
+        list.EndPointer = value3
         list.punteroAnterior = null
 
         //Act
@@ -274,14 +274,14 @@ class AnggieLinkedListTest {
         val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value2
-        list.punteroFinal = value3
+        list.EndPointer = value3
         list.punteroAnterior = value1
 
         //Act
         list.delete()
 
         //Assert
-        assertEquals(list.head?.siguiente, value3)
+        assertEquals(list.head?.next, value3)
     }
 
     @Test
@@ -293,14 +293,14 @@ class AnggieLinkedListTest {
         val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value3
-        list.punteroFinal = value3
+        list.EndPointer = value3
         list.punteroAnterior = value2
 
         //Act
         list.delete()
 
         //Assert
-        assertEquals(list.head?.siguiente, value2)
+        assertEquals(list.head?.next, value2)
     }
 
     @Test
@@ -312,7 +312,7 @@ class AnggieLinkedListTest {
         val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value1
-        list.punteroFinal = value3
+        list.EndPointer = value3
         list.punteroAnterior = null
 
         //Act
@@ -331,7 +331,7 @@ class AnggieLinkedListTest {
         val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value3
-        list.punteroFinal = value3
+        list.EndPointer = value3
         list.punteroAnterior = null
 
         //Act
@@ -350,14 +350,14 @@ class AnggieLinkedListTest {
         val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value1
-        list.punteroFinal = value3
+        list.EndPointer = value3
         list.punteroAnterior = null
 
         //Act
         list.next()
 
         //Assert
-        assertEquals(list.head?.siguiente, value2)
+        assertEquals(list.head?.next, value2)
     }
 
     @Test
@@ -369,14 +369,14 @@ class AnggieLinkedListTest {
         val value1 = Node(Pair(1, "aa"), value2)
         list.head = value1
         list.punteroActual = value3
-        list.punteroFinal = value3
+        list.EndPointer = value3
         list.punteroAnterior = value2
 
         //Act
         list.next()
 
         //Assert
-        assertEquals(list.head?.siguiente?.siguiente, value3)
+        assertEquals(list.head?.next?.next, value3)
     }
 
     @Test
