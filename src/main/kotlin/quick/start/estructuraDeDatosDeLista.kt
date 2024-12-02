@@ -1,3 +1,4 @@
+
 fun main(){
     val list = AnggieLinkedList()
     val hi = list.isEmpty()
@@ -32,7 +33,7 @@ fun main(){
         println(list1)
         println()
 
-    list.GetNext()
+    list.getNext()
         print("EL puntero esta en el nodo:          ")
         println(list.get())
         println()
@@ -43,7 +44,8 @@ fun main(){
         println()
 }
 
-data class Node (var info: Pair<Int, String>, var next : Node? = null ){
+
+data class Node (internal var info: Pair<Int, String>, internal var next : Node? = null){
     override fun toString(): String {
         return if(next != null){
             "$info => $next"
@@ -52,26 +54,25 @@ data class Node (var info: Pair<Int, String>, var next : Node? = null ){
         }
     }
 }
-class AnggieLinkedList {
-    var head: Node? = null
-    var CurrentPointer: Node? = null
-    var PreviousPointer: Node? = null
-    var EndPointer: Node? = null
-
+open class AnggieLinkedList{
+    private var head: Node? = null
+    private var currentPointer: Node? = null
+    private var previousPointer: Node? = null
+    private var endPointer: Node? = null
 
     fun insert(info: Pair<Int, String>){
         val node = Node(info)
 
-        if (CurrentPointer == null){
+        if (currentPointer == null){
             createNewFirstNode(node)
         }
-        else if(CurrentPointer?.next == null){
-            CurrentPointer?.next = node
-            EndPointer = node
+        else if(currentPointer?.next == null){
+            currentPointer?.next = node
+            endPointer = node
         }
         else {
-            node.next = CurrentPointer?.next
-            CurrentPointer?.next = node
+            node.next = currentPointer?.next
+            currentPointer?.next = node
         }
     }
     fun prepend(info: Pair<Int, String>){
@@ -79,10 +80,10 @@ class AnggieLinkedList {
         if (head == null){
             createNewFirstNode(firstNode)
         }
-        else if(CurrentPointer == head){
+        else if(currentPointer == head){
             firstNode.next = head
             head = firstNode
-            PreviousPointer = firstNode
+            previousPointer = firstNode
         }
         else {
             firstNode.next = head
@@ -94,60 +95,58 @@ class AnggieLinkedList {
         if (head == null){
             createNewFirstNode(endNode)
         }
-        else if(head?.next == CurrentPointer){
-            PreviousPointer = head
-            EndPointer?.next = endNode
-            EndPointer = endNode
+        else if(head?.next == currentPointer){
+            previousPointer = head
+            endPointer?.next = endNode
+            endPointer = endNode
         }
         else {
-            EndPointer?.next = endNode
-            EndPointer = endNode
+            endPointer?.next = endNode
+            endPointer = endNode
         }
     }
-
     private fun createNewFirstNode(firstNode: Node) {
         head = firstNode
-        CurrentPointer = firstNode
-        EndPointer = firstNode
+        currentPointer = firstNode
+        endPointer = firstNode
     }
-
     fun delete() {
         var ant = head
         var act = head
         var punteroSiguiente = act?.next
 
-        if (CurrentPointer == null){
-            PreviousPointer = null
-            EndPointer = null
-            CurrentPointer = head
+        if (currentPointer == null){
+            previousPointer = null
+            endPointer = null
+            currentPointer = head
             head = null
         }
         else if (head?.next == null){
             head = null
-            CurrentPointer = null
-            EndPointer = null
-            PreviousPointer = null
+            currentPointer = null
+            endPointer = null
+            previousPointer = null
         }
-        else if (CurrentPointer == head){
-            head = CurrentPointer?.next
-            CurrentPointer = CurrentPointer?.next
+        else if (currentPointer == head){
+            head = currentPointer?.next
+            currentPointer = currentPointer?.next
         }
-        else if (CurrentPointer?.next != null){
-            CurrentPointer = CurrentPointer?.next
-            PreviousPointer?.next = CurrentPointer
+        else if (currentPointer?.next != null){
+            currentPointer = currentPointer?.next
+            previousPointer?.next = currentPointer
         }
-        else if (CurrentPointer == EndPointer){
+        else if (currentPointer == endPointer){
             while (punteroSiguiente != null ){
                 ant = act
                 act = punteroSiguiente
                 punteroSiguiente = act.next
             }
-            PreviousPointer = ant
+            previousPointer = ant
             ant?.next = null
-            EndPointer = ant
-            EndPointer?.next = null
-            CurrentPointer = ant
-            CurrentPointer?.next = null
+            endPointer = ant
+            endPointer?.next = null
+            currentPointer = ant
+            currentPointer?.next = null
         }
     }
     fun isEmpty(): Boolean {
@@ -160,26 +159,29 @@ class AnggieLinkedList {
             (head.toString())
         }
     }
-    fun GetNext (){
-        val nextPointer = CurrentPointer?.next
+    fun getNext (){
+        val nextPointer = currentPointer?.next
         
         if (nextPointer == null){
-            CurrentPointer
+            currentPointer
         }
-        else if (CurrentPointer == head){
-            CurrentPointer = nextPointer
-            PreviousPointer = head
+        else if (currentPointer == head){
+            currentPointer = nextPointer
+            previousPointer = head
         }
         else {
-            CurrentPointer = nextPointer
-            PreviousPointer = PreviousPointer?.next
+            currentPointer = nextPointer
+            previousPointer = previousPointer?.next
         }
     }
     fun get(): Pair<Int, String>? {
-        return CurrentPointer?.info
+        return currentPointer?.info
     }
 
+
+
 }
+
 
 //list.insert(Pair(2, "holiwis")) YA     // Creates and inserts a new node after the current pointer
 //list.delete()                   // Deletes the current pointer node
@@ -187,5 +189,5 @@ class AnggieLinkedList {
 //list.append(Pair(4, "perro")  YA       // Creates a new node and sets it at the end of the list
 //list.isEmpty()                YA       // Returns true if the list is empty
 //list.toString()               YA       // Returns a String of the values in this format "[(1, hola),(2, adios),(3, cokis)]"
-//list.GetNext()                     // Mueve el puntero actual al siguiente nodo de la lista
+//list.getNext()                     // Mueve el puntero actual al siguiente nodo de la lista
 //list.get()                    YA       // Retorna el valor del nodo actual

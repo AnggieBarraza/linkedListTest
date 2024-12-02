@@ -1,11 +1,11 @@
 package quick.start
-
 import AnggieLinkedList
 import Node
 import org.junit.Test
 import kotlin.test.assertEquals
+import java.lang.reflect.Field
 
-class AnggieLinkedListTest {
+class AnggieLinkedListTest (){
 
     @Test
     fun `isEmpty() empty list`() {
@@ -23,7 +23,10 @@ class AnggieLinkedListTest {
     fun `isEmpty() non-empty list`() {
         //Arrange
         val list = AnggieLinkedList()
-        list.head = Node(Pair(0, ""))
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        headField.isAccessible = true
+        val node = Node(Pair(3, "bb"))
+        headField.set(list,node)
 
         //Act
         val isEmpty = list.isEmpty()
@@ -31,352 +34,421 @@ class AnggieLinkedListTest {
         //Assert
         assertEquals(isEmpty, false)
     }
-
     @Test
-    fun `insert() add head with insert`() {
+    fun `insert() add one node with insert where head = info`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value = Pair(4, "inert")
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        headField.isAccessible = true
 
         //Act
-        list.insert(info = value)
+        val info = Pair(4, "insert")
+        list.insert(info = info)
 
         //Assert
-        assertEquals(list.head?.info, value)
+        val head: Node? = headField.get(list) as Node?
+        assertEquals(head?.info, info)
     }
-
     @Test
-    fun `insert() add 2 nodes with insert`() {
+    fun `insert() add 2 nodes with insert, when head = value1 and second node = value2 should show info from the head and info from de second node `() {
         //Arrange
         val list = AnggieLinkedList()
-        val value1 = Pair(0, "aa")
-        val value2 = Pair(1, "bb")
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        headField.isAccessible = true
 
         //Act
+        val value1 = Pair(1, "aa")
+        val value2 = Pair(2, "bb")
         list.insert(info = value1)
         list.insert(info = value2)
 
         //Assert
-        assertEquals(list.head?.info, value1)
-        assertEquals(list.head?.next?.info, value2)
+        val fieldValue: Node? = headField.get(list) as Node?
+        assertEquals(fieldValue?.info, value1)
+        assertEquals(fieldValue?.next?.info, value2)
     }
 
     @Test
-    fun `insert() add 3 nodes or more with insert`() {
+    fun `insert() add 3 nodes or more with insert, should show value from the first node, second node, third node and fourth node, `() {
         //Arrange
         val list = AnggieLinkedList()
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        headField.isAccessible = true
+
+        //Act
         val value1 = Pair(0, "aa")
         val value2 = Pair(1, "bb")
         val value3 = Pair(2, "cc")
         val value4 = Pair(3, "dd")
-
-        //Act
         list.insert(info = value1)
         list.insert(info = value2)
         list.insert(info = value3)
         list.insert(info = value4)
 
         //Assert
-        assertEquals(list.head?.info, value1)
-        assertEquals(list.head?.next?.info, value4)
-        assertEquals(list.head?.next?.next?.info, value3)
-        assertEquals(list.head?.next?.next?.next?.info, value2)
+        val fieldValue: Node? = headField.get(list) as Node?
+        assertEquals(fieldValue?.info, value1)
+        assertEquals(fieldValue?.next?.info, value4)
+        assertEquals(fieldValue?.next?.next?.info, value3)
+        assertEquals(fieldValue?.next?.next?.next?.info, value2)
     }
-
     @Test
-    fun `append() add head with append`() {
+    fun `append() add one node with append where head = value`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value = Pair(4, "aa")
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        headField.isAccessible = true
 
         //Act
+        val value = Pair(1, "aa")
         list.append(info = value)
 
         //Assert
-        assertEquals(list.head?.info, value)
+        val fieldValue: Node? = headField.get(list) as Node?
+        assertEquals(fieldValue?.info, value)
     }
-
     @Test
-    fun `append() add 2 nodes with append`() {
+    fun `append() add 2 nodes with append where head = value1 and second node = value2`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value1 = Pair(1, "aa")
-        val value2 = Pair(2, "bb")
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        headField.isAccessible = true
 
         //Act
+        val value1 = Pair(1, "aa")
+        val value2 = Pair(2, "bb")
         list.append(info = value1)
         list.append(info = value2)
 
         //Assert
-        assertEquals(list.head?.info, value1)
-        assertEquals(list.head?.next?.info, value2)
+        val fieldValue: Node? = headField.get(list) as Node?
+        assertEquals(fieldValue?.info, value1)
+        assertEquals(fieldValue?.next?.info, value2)
     }
-
     @Test
-    fun `append() add 3 nodes or more with append`() {
+    fun `append() add 3 nodes or more with append where head = value1, second node = value2 and third node = value3`() {
         //Arrange
         val list = AnggieLinkedList()
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        headField.isAccessible = true
+
+        //Act
         val value1 = Pair(1, "aa")
         val value2 = Pair(2, "bb")
         val value3 = Pair(2, "bb")
-
-        //Act
         list.append(info = value1)
         list.append(info = value2)
         list.append(info = value3)
 
         //Assert
-        assertEquals(list.head?.info, value1)
-        assertEquals(list.head?.next?.info, value2)
-        assertEquals(list.head?.next?.next?.info, value3)
+        val fieldValue: Node? = headField.get(list) as Node?
+        assertEquals(fieldValue?.info, value1)
+        assertEquals(fieldValue?.next?.info, value2)
+        assertEquals(fieldValue?.next?.next?.info, value3)
     }
-
     @Test
-    fun `append() add 3 nodes with append and check what's the current point`() {
+    fun `append() currentPointer should stay as head node after adding 3 nodes with append`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value1 = Pair(1, "aa")
-        val value2 = Pair(2, "bb")
-        val value3 = Pair(2, "bb")
+        val currentPointerField: Field = AnggieLinkedList::class.java.getDeclaredField("currentPointer")
+        currentPointerField.isAccessible = true
 
         //Act
+        val value1 = Pair(1, "aa")
+        val value2 = Pair(2, "bb")
+        val value3 = Pair(3, "cc")
         list.append(info = value1)
         list.append(info = value2)
         list.append(info = value3)
 
         //Assert
-        assertEquals(list.CurrentPointer?.info, value1)
+        val currentPointer: Node? = currentPointerField.get(list) as Node?
+        assertEquals(currentPointer?.info, value1)
     }
 
     @Test
-    fun `prepend() add head with prepend`() {
+    fun `prepend() add one node with prepend where head should be value1`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value1 = Pair(1, "aa")
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        headField.isAccessible = true
 
         //Act
+        val value1 = Pair(1, "aa")
         list.prepend(info = value1)
 
         //Assert
-        assertEquals(list.head?.info, value1)
+        val fieldValue: Node? = headField.get(list) as Node?
+        assertEquals(fieldValue?.info, value1)
     }
 
     @Test
-    fun `prepend() add 2 nodes with prepend`() {
+    fun `prepend() add two nodes with prepend where head should be value1 and second node should be value2`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value2 = Pair(1, "aa")
-        val value1 = Pair(2, "bb")
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        headField.isAccessible = true
 
         //Act
+        val value2 = Pair(1, "aa")
+        val value1 = Pair(2, "bb")
         list.prepend(info = value2)
         list.prepend(info = value1)
 
         //Assert
-        assertEquals(list.head?.info, value1)
-        assertEquals(list.head?.next?.info, value2)
+        val fieldValue: Node? = headField.get(list) as Node?
+        assertEquals(fieldValue?.info, value1)
+        assertEquals(fieldValue?.next?.info, value2)
     }
 
     @Test
-    fun `prepend() add 3 nodes with prepend`() {
+    fun `prepend() add three nodes with prepend where head should be value1, second node should be value2 and third node should be value3`() {
         //Arrange
         val list = AnggieLinkedList()
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        headField.isAccessible = true
+
+        //Act
         val value1 = Pair(1, "aa")
         val value2 = Pair(2, "bb")
         val value3 = Pair(3, "bb")
-
-        //Act
         list.prepend(info = value3)
         list.prepend(info = value2)
         list.prepend(info = value1)
 
         //Assert
-        assertEquals(list.head?.info, value1)
-        assertEquals(list.head?.next?.info, value2)
-        assertEquals(list.head?.next?.next?.info, value3)
+        val fieldValue: Node? = headField.get(list) as Node?
+        assertEquals(fieldValue?.info, value1)
+        assertEquals(fieldValue?.next?.info, value2)
+        assertEquals(fieldValue?.next?.next?.info, value3)
     }
 
     @Test
     fun `prepend() add 3 nodes and check what's the current point`() {
         //Arrange
         val list = AnggieLinkedList()
+        val currentPointerField: Field = AnggieLinkedList::class.java.getDeclaredField("currentPointer")
+        currentPointerField.isAccessible = true
+
+        //Act
         val value1 = Pair(1, "aa")
         val value2 = Pair(2, "bb")
         val value3 = Pair(3, "bb")
-
-        //Act
         list.prepend(info = value3)
         list.prepend(info = value2)
         list.prepend(info = value1)
 
         //Assert
-        assertEquals(list.CurrentPointer?.info, value3)
+        val currentPointer: Node? = currentPointerField.get(list) as Node?
+        assertEquals(currentPointer?.info, value3)
     }
 
     @Test
-    fun `delete() when empty list`() {
+    fun `delete() delete when empty list should stay empty`() {
         //Arrange
         val list = AnggieLinkedList()
-        list.head = null
-        list.CurrentPointer = null
-        list.EndPointer = null
-        list.PreviousPointer = null
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        headField.isAccessible = true
 
         //Act
         list.delete()
 
         //Assert
-        assertEquals(list.head, null)
+        val head: Node? = headField.get(list) as Node?
+        assertEquals(head, null)
+
     }
 
     @Test
-    fun `delete() delete when only have head`() {
+    fun `delete() delete when only have one node should result in empty head`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value1 = Node(Pair(1, "aa"), null)
-        list.head = value1
-        list.CurrentPointer = value1
-        list.EndPointer = value1
-        list.PreviousPointer = null
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        headField.isAccessible = true
+
+        val node = Node(Pair(1, "aa"))
+        headField.set(list,node)
 
         //Act
         list.delete()
 
         //Assert
-        assertEquals(list.head, null)
+        val head: Node? = headField.get(list) as Node?
+        assertEquals(head, null)
     }
-
     @Test
-    fun `delete() when current pointer is head`() {
+    fun `delete() delete currentPointer when its = to head and there are 2+ nodes, currentPointer should change to second node`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Node(Pair(3, "bb"))
-        val value2 = Node(Pair(2, "bb"), value3)
-        val value1 = Node(Pair(1, "aa"), value2)
-        list.head = value1
-        list.CurrentPointer = value1
-        list.EndPointer = value3
-        list.PreviousPointer = null
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        val currentPointerField: Field = AnggieLinkedList::class.java.getDeclaredField("currentPointer")
+        headField.isAccessible = true
+        currentPointerField.isAccessible = true
+
+        val node3 = Node(Pair(3, "bb"))
+        val node2 = Node(Pair(2, "bb"), node3)
+        val node1 = Node(Pair(1, "aa"), node2)
+        headField.set(list,node1)
+        currentPointerField.set(list,node1)
 
         //Act
         list.delete()
 
         //Assert
-        assertEquals(list.head, value2)
+        val currentPointer: Node? = currentPointerField.get(list) as Node?
+        assertEquals(currentPointer, node2)
     }
 
     @Test
     fun `delete() delete current pointer node when next node is not null`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Node(Pair(3, "cc"))
-        val value2 = Node(Pair(2, "bb"), value3)
-        val value1 = Node(Pair(1, "aa"), value2)
-        list.head = value1
-        list.CurrentPointer = value2
-        list.EndPointer = value3
-        list.PreviousPointer = value1
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        val currentPointerField: Field = AnggieLinkedList::class.java.getDeclaredField("currentPointer")
+        val previousPointer: Field = AnggieLinkedList::class.java.getDeclaredField("previousPointer")
+        val endPointer: Field = AnggieLinkedList::class.java.getDeclaredField("endPointer")
+
+        headField.isAccessible = true
+        currentPointerField.isAccessible = true
+        previousPointer.isAccessible = true
+        endPointer.isAccessible = true
+
+        val node3 = Node(Pair(3, "bb"))
+        val node2 = Node(Pair(2, "bb"), node3)
+        val node1 = Node(Pair(1, "aa"), node2)
+        headField.set(list,node1)
+        currentPointerField.set(list,node2)
+        endPointer.set(list,node3)
+        previousPointer.set(list,node1)
 
         //Act
         list.delete()
 
         //Assert
-        assertEquals(list.head?.next, value3)
+        val currentPointer: Node? = currentPointerField.get(list) as Node?
+        assertEquals(currentPointer, node3)
     }
 
     @Test
     fun `delete() delete when current pointer node is end pointer`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Node(Pair(3, "bb"))
-        val value2 = Node(Pair(2, "bb"), value3)
-        val value1 = Node(Pair(1, "aa"), value2)
-        list.head = value1
-        list.CurrentPointer = value3
-        list.EndPointer = value3
-        list.PreviousPointer = value2
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        val currentPointerField: Field = AnggieLinkedList::class.java.getDeclaredField("currentPointer")
+        val previousPointerField: Field = AnggieLinkedList::class.java.getDeclaredField("previousPointer")
+        val endPointerField: Field = AnggieLinkedList::class.java.getDeclaredField("endPointer")
+
+        endPointerField.isAccessible = true
+        previousPointerField.isAccessible = true
+        headField.isAccessible = true
+        currentPointerField.isAccessible = true
+
+        val node3 = Node(Pair(3, "bb"))
+        val node2 = Node(Pair(2, "bb"), node3)
+        val node1 = Node(Pair(1, "aa"), node2)
+        headField.set(list, node1)
+        currentPointerField.set(list,node3)
+        endPointerField.set(list, node3)
+        previousPointerField.set(list,node2)
 
         //Act
         list.delete()
 
         //Assert
-        assertEquals(list.head?.next, value2)
+        val currentPointer: Node? = currentPointerField.get(list) as Node?
+        assertEquals(currentPointer, node2)
     }
 
     @Test
-    fun `get() get current pointer node with get`() {
+    fun `get() WITH non-empty list and currentPointer = head SHOULD return info from the head`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Node(Pair(3, "bb"))
-        val value2 = Node(Pair(2, "bb"), value3)
-        val value1 = Node(Pair(1, "aa"), value2)
-        list.head = value1
-        list.CurrentPointer = value1
-        list.EndPointer = value3
-        list.PreviousPointer = null
+        val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+        headField.isAccessible = true
+        val currentPointerField: Field = AnggieLinkedList::class.java.getDeclaredField("currentPointer")
+        currentPointerField.isAccessible = true
+        val node3 = Node(Pair(3, "bb"))
+        val node2 = Node(Pair(2, "bb"), node3)
+        val node1 = Node(Pair(1, "aa"), node2)
+        headField.set(list,node1)
+        currentPointerField.set(list,node1)
 
         //Act
-        list.get()
+        val info = list.get()
 
         //Assert
-        assertEquals(list.CurrentPointer, value1)
+        val head: Node? = headField.get(list) as Node?
+        assertEquals(head?.info, info)
+
     }
 
     @Test
-    fun `get() get current pointer 2`() {
-        //Arrange
-        val list = AnggieLinkedList()
-        val value3 = Node(Pair(3, "bb"))
-        val value2 = Node(Pair(2, "bb"), value3)
-        val value1 = Node(Pair(1, "aa"), value2)
-        list.head = value1
-        list.CurrentPointer = value3
-        list.EndPointer = value3
-        list.PreviousPointer = null
+    fun `get() Whit non-empty list and currentPointer = endPointer SHOULd return info from the endPointer `() {
+    //Arrange
+    val list = AnggieLinkedList()
+    val headField: Field = AnggieLinkedList::class.java.getDeclaredField("head")
+    val currentPointerField: Field = AnggieLinkedList::class.java.getDeclaredField("currentPointer")
+    val endPointerField: Field = AnggieLinkedList::class.java.getDeclaredField("endPointer")
+    headField.isAccessible = true
+    currentPointerField.isAccessible = true
+    endPointerField.isAccessible = true
+    val node3 = Node(Pair(3, "bb"))
+    val node2 = Node(Pair(2, "bb"), node3)
+    val node1 = Node(Pair(1, "aa"), node2)
+    headField.set(list,node1)
+    currentPointerField.set(list,node3)
+    endPointerField.set(list,node3)
 
-        //Act
-        list.get()
+    //Act
+    val info = list.get()
 
-        //Assert
-        assertEquals(list.CurrentPointer, value3)
+    //Assert
+    val currentPointer: Node? = currentPointerField.get(list) as Node?
+    assertEquals(currentPointer?.info, info)
     }
 
     @Test
-    fun `GetNext() next node is not null`() {
+    fun `getNext() when currentPointer its = head and next node is not null should return second node`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Node(Pair(3, "bb"))
-        val value2 = Node(Pair(2, "bb"), value3)
-        val value1 = Node(Pair(1, "aa"), value2)
-        list.head = value1
-        list.CurrentPointer = value1
-        list.EndPointer = value3
-        list.PreviousPointer = null
+        val currentPointerField: Field = AnggieLinkedList::class.java.getDeclaredField("currentPointer")
+        currentPointerField.isAccessible = true
+        val node3 = Node(Pair(3, "bb"))
+        val node2 = Node(Pair(2, "bb"), node3)
+        val node1 = Node(Pair(1, "aa"), node2)
+        currentPointerField.set(list,node1)
 
         //Act
-        list.GetNext()
+        list.getNext()
 
         //Assert
-        assertEquals(list.head?.next, value2)
+        val currentPointer: Node? = currentPointerField.get(list) as Node?
+        assertEquals(currentPointer, node2)
     }
 
     @Test
-    fun `next() next node is not null 2`() {
+    fun `getNext() when currentPointer its = endPointer should return endPointer`() {
         //Arrange
         val list = AnggieLinkedList()
-        val value3 = Node(Pair(3, "bb"))
-        val value2 = Node(Pair(2, "bb"), value3)
-        val value1 = Node(Pair(1, "aa"), value2)
-        list.head = value1
-        list.CurrentPointer = value3
-        list.EndPointer = value3
-        list.PreviousPointer = value2
+        val currentPointerField: Field = AnggieLinkedList::class.java.getDeclaredField("currentPointer")
+        val endPointerField: Field = AnggieLinkedList::class.java.getDeclaredField("endPointer")
+
+        endPointerField.isAccessible = true
+
+        currentPointerField.isAccessible = true
+        val node3 = Node(Pair(3, "bb"))
+        val node2 = Node(Pair(2, "bb"), node3)
+        val node1 = Node(Pair(1, "aa"), node2)
+        currentPointerField.set(list,node3)
+        endPointerField.set(list,node3)
+
 
         //Act
-        list.GetNext()
+        list.getNext()
 
         //Assert
-        assertEquals(list.head?.next?.next, value3)
+        val currentPointer: Node? = currentPointerField.get(list) as Node?
+        assertEquals(currentPointer, node3)
     }
 
     @Test
